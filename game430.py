@@ -8,6 +8,16 @@ Class 1: Ends 30:36
 6. Non-display surfaces 
 '''
 
+'''
+Class 2: Ends 45:23
+1. Fix screen.blit line
+2. Import Image, replace test_surface
+3. Text Surface
+4. Resize Surfaces
+5. Animating Surfaces
+6. Collisions with wall
+'''
+
 import pygame
 from sys import exit #using to quit the program effectively
 
@@ -25,11 +35,21 @@ pygame.display.set_caption("Ben's 4:30PM Python Game")
 #Clock Creation
 clock = pygame.time.Clock() #clock object
 
+#Surfaces with text
+font_type = 'assets/fonts/MinecraftRegular-Bmg3.otf'
+font_size = 50
+test_font = pygame.font.Font(font_type, font_size)
+
+text_surface = test_font.render('Message', True, 'White') #format is (text, anti-aliasing (bool), color)
+
 #Non-display surfaces
-test_width = 100
-test_height = 200
-test_surface = pygame.Surface((WIDTH/2 - test_width/2, HEIGHT/2 - test_height/2))    #creates surface with given height and width
-test_surface.fill('cyan')   #need to change color so it displays on black background
+amongus_surface = pygame.image.load('assets/graphics/among_us_guy.png')
+amongus_surface = pygame.transform.rotozoom(amongus_surface ,0, 0.1)
+amongus_x = 10; amongus_y = 10
+amongus_xSpeed = 2; amongus_ySpeed = 2
+
+background_surface = pygame.image.load('assets/graphics/space_background.png')
+background_surface = pygame.transform.rotozoom(background_surface, 0, 2)
 
 
 
@@ -44,7 +64,20 @@ while True:
 
 
     #draw all elements
-    screen.blit(test_surface, (0,0))    #displays surfaces on screen at given position
+    screen.blit(background_surface, ((0,0)))
+    screen.blit(amongus_surface, ((amongus_x, amongus_y)))    #displays surfaces on screen at given position
+    screen.blit(text_surface, ((WIDTH/2 - text_surface.get_width()/2, HEIGHT/2 - text_surface.get_height()/2)))
+
+    #Animating (Updating coordinates)
+    if amongus_x > WIDTH-amongus_surface.get_width() or amongus_x < 0:
+        amongus_xSpeed *= -1.1
+ 
+    if amongus_y > HEIGHT-amongus_surface.get_height() or amongus_y < 0:
+        amongus_ySpeed *= -1.1
+
+    amongus_x += amongus_xSpeed
+    amongus_y += amongus_ySpeed
+ #   print("x: ", amongus_x, "\t y: ", amongus_y)
 
     #update everything
 
